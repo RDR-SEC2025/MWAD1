@@ -1,148 +1,451 @@
 
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap");
+
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #e9e7e1;
+  font-family: "DM Sans", sans-serif;
 }
 
-.calculator-container {
+/* =========================
+   PAGE
+========================= */
+
+.page {
   min-height: 100vh;
+  padding: 40px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  justify-content: center;
 }
 
-.calculator {
-  width: 100%;
-  max-width: 380px;
-  padding: 20px;
-  border-radius: 25px;
-  background: #1e1e2f;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-}
+/* =========================
+   CAROUSEL
+========================= */
 
-.display {
+.carousel {
   width: 100%;
-  min-height: 100px;
-  margin-bottom: 20px;
-  padding: 20px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  max-width: 1450px;
+  min-height: 820px;
+
+  background: #f7f6f2;
+  position: relative;
+
   overflow: hidden;
-  border-radius: 15px;
-  background: #11111c;
-  color: white;
-  font-size: clamp(2rem, 8vw, 3rem);
-  font-weight: 500;
-  word-break: break-all;
+
+  padding: 35px 45px 30px;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.12);
 }
 
-.buttons {
+/* =========================
+   HEADER
+========================= */
+
+.carousel-header {
+  height: 50px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #d8d6d0;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: #171717;
+}
+
+.logo span {
+  font-size: 25px;
+}
+
+.header-text {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: #777;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.carousel-main {
+  min-height: 590px;
+
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: 38% 62%;
+
+  align-items: center;
+
+  padding: 55px 0;
 }
 
-button {
-  min-height: 65px;
+/* =========================
+   CONTENT
+========================= */
+
+.content {
+  padding: 20px 60px 20px 20px;
+
+  position: relative;
+  z-index: 3;
+}
+
+.category {
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: #777;
+
+  margin-bottom: 30px;
+}
+
+.content h1 {
+  margin: 0;
+
+  font-family: "Playfair Display", serif;
+
+  font-size: clamp(55px, 6vw, 90px);
+
+  line-height: 0.98;
+
+  font-weight: 500;
+
+  color: #171717;
+
+  animation: textIn 0.7s ease;
+}
+
+.content p {
+  max-width: 390px;
+
+  margin: 35px 0;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+
+  color: #686868;
+
+  animation: textIn 0.8s ease;
+}
+
+.content-line {
+  width: 55px;
+  height: 1px;
+
+  background: #222;
+
+  margin-bottom: 25px;
+}
+
+.slide-counter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13px;
+
+  color: #999;
+}
+
+.slide-counter strong {
+  color: #171717;
+  font-size: 16px;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.image-area {
+  position: relative;
+
+  height: 570px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-wrapper {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  opacity: 0;
+
+  transform: scale(1.06);
+
+  transition:
+    opacity 0.8s ease,
+    transform 1.2s ease;
+}
+
+.image-wrapper img.active {
+  opacity: 1;
+
+  transform: scale(1);
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.navigation {
+  position: absolute;
+
+  bottom: -1px;
+  left: -1px;
+
+  display: flex;
+}
+
+.navigation button {
+  width: 65px;
+  height: 65px;
+
   border: none;
-  border-radius: 15px;
-  background: #2d2d44;
-  color: white;
-  font-size: 1.3rem;
-  font-weight: 600;
+
+  background: #f7f6f2;
+
+  color: #171717;
+
+  font-size: 20px;
+
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease;
+
+  transition: all 0.3s ease;
 }
 
-button:hover {
-  background: #3b3b58;
+.navigation button:first-child {
+  border-right: 1px solid #d8d6d0;
 }
 
-button:active {
-  transform: scale(0.94);
-}
-
-.special {
-  background: #55556d;
-}
-
-.special:hover {
-  background: #666681;
-}
-
-.operator {
-  background: #ff9f43;
+.navigation button:hover {
+  background: #171717;
   color: white;
 }
 
-.operator:hover {
-  background: #ffad5c;
+/* =========================
+   THUMBNAILS
+========================= */
+
+.thumbnail-container {
+  height: 85px;
+
+  display: flex;
+
+  gap: 14px;
+
+  align-items: center;
+
+  border-top: 1px solid #d8d6d0;
 }
 
-.equals {
-  background: #2ecc71;
+.thumbnail {
+  width: 90px;
+  height: 58px;
+
+  position: relative;
+
+  padding: 0;
+
+  border: none;
+
+  background: none;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  opacity: 0.45;
+
+  transition: all 0.3s ease;
 }
 
-.equals:hover {
-  background: #40d47e;
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
 }
 
-.zero {
-  grid-column: span 2;
+.thumbnail span {
+  position: absolute;
+
+  top: 6px;
+  left: 7px;
+
+  color: white;
+
+  font-size: 10px;
+
+  text-shadow: 0 1px 5px black;
 }
 
-/* Tablets and smaller screens */
-@media (max-width: 500px) {
-  .calculator {
-    max-width: 350px;
-    padding: 16px;
+.thumbnail:hover {
+  opacity: 0.8;
+}
+
+.thumbnail.selected {
+  width: 115px;
+
+  opacity: 1;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: #dedcd6;
+}
+
+.progress-fill {
+  height: 100%;
+
+  background: #171717;
+
+  transition: width 0.5s ease;
+}
+
+/* =========================
+   ANIMATION
+========================= */
+
+@keyframes textIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
 
-  .buttons {
-    gap: 9px;
-  }
-
-  button {
-    min-height: 60px;
-  }
-
-  .display {
-    min-height: 90px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* Small mobile devices */
-@media (max-width: 360px) {
-  .calculator-container {
-    padding: 10px;
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+
+  .page {
+    padding: 20px;
   }
 
-  .calculator {
-    padding: 12px;
-    border-radius: 20px;
+  .carousel {
+    padding: 25px;
   }
 
-  .buttons {
-    gap: 7px;
+  .carousel-main {
+    grid-template-columns: 1fr;
+
+    padding: 40px 0;
   }
 
-  button {
-    min-height: 55px;
-    font-size: 1.1rem;
-    border-radius: 12px;
+  .content {
+    padding: 10px 0 35px;
   }
 
-  .display {
-    min-height: 80px;
-    padding: 15px;
-    font-size: 2rem;
+  .content h1 {
+    font-size: 60px;
+  }
+
+  .content p {
+    margin: 20px 0;
+  }
+
+  .image-area {
+    height: 450px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .page {
+    padding: 0;
+  }
+
+  .carousel {
+    min-height: 100vh;
+
+    padding: 20px;
+
+    box-shadow: none;
+  }
+
+  .header-text {
+    display: none;
+  }
+
+  .carousel-main {
+    padding: 30px 0;
+  }
+
+  .content {
+    padding-bottom: 25px;
+  }
+
+  .content h1 {
+    font-size: 48px;
+  }
+
+  .content p {
+    font-size: 14px;
+
+    margin: 20px 0;
+  }
+
+  .image-area {
+    height: 350px;
+  }
+
+  .thumbnail-container {
+    overflow-x: auto;
+  }
+
+  .thumbnail {
+    min-width: 75px;
+  }
+
+  .thumbnail.selected {
+    min-width: 95px;
   }
 }

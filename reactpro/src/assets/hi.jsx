@@ -1,237 +1,173 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 import "./App.css";
 
-function Calculator() {
-  const [display, setDisplay] = useState("0");
-  const [firstValue, setFirstValue] = useState(null);
-  const [operator, setOperator] = useState(null);
-  const [waitingForSecondValue, setWaitingForSecondValue] = useState(false);
+const slides = [
+  {
+    image:
+      "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1600&q=90",
+    category: "01 — ADVENTURE",
+    title: "Explore the Unknown",
+    description:
+      "Discover breathtaking landscapes, hidden destinations and unforgettable experiences."
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1600&q=90",
+    category: "02 — NATURE",
+    title: "Into the Wild",
+    description:
+      "Leave the ordinary behind and experience the beauty of nature."
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=90",
+    category: "03 — ESCAPE",
+    title: "Paradise Awaits",
+    description:
+      "Find peaceful shores, crystal-clear waters and places worth remembering."
+  },
+  {
+    image:
+      "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1600&q=90",
+    category: "04 — JOURNEY",
+    title: "Beyond the Horizon",
+    description:
+      "Every journey begins somewhere. Make yours unforgettable."
+  }
+];
 
-  const inputNumber = (number) => {
-    if (display === "Error") {
-      setDisplay(number);
-      return;
-    }
+function ImageCarousel() {
+  const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-    if (waitingForSecondValue) {
-      setDisplay(number);
-      setWaitingForSecondValue(false);
-    } else {
-      setDisplay(display === "0" ? number : display + number);
-    }
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + 1) % slides.length);
   };
 
-  const inputDecimal = () => {
-    if (waitingForSecondValue) {
-      setDisplay("0.");
-      setWaitingForSecondValue(false);
-      return;
-    }
-
-    if (!display.includes(".")) {
-      setDisplay(display + ".");
-    }
+  const previousSlide = () => {
+    setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const clearCalculator = () => {
-    setDisplay("0");
-    setFirstValue(null);
-    setOperator(null);
-    setWaitingForSecondValue(false);
-  };
+  useEffect(() => {
+    if (paused) return;
 
-  const deleteNumber = () => {
-    if (display === "Error") {
-      clearCalculator();
-      return;
-    }
+    const timer = setInterval(nextSlide, 5000);
 
-    if (display.length === 1) {
-      setDisplay("0");
-    } else {
-      setDisplay(display.slice(0, -1));
-    }
-  };
-
-  const toggleSign = () => {
-    if (display === "0" || display === "Error") return;
-
-    setDisplay(
-      display.startsWith("-")
-        ? display.slice(1)
-        : "-" + display
-    );
-  };
-
-  const percentage = () => {
-    if (display === "Error") return;
-
-    const value = parseFloat(display);
-    setDisplay(String(value / 100));
-  };
-
-  const calculate = (a, b, op) => {
-    switch (op) {
-      case "+":
-        return a + b;
-
-      case "-":
-        return a - b;
-
-      case "*":
-        return a * b;
-
-      case "/":
-        return b === 0 ? "Error" : a / b;
-
-      default:
-        return b;
-    }
-  };
-
-  const chooseOperator = (nextOperator) => {
-    const inputValue = parseFloat(display);
-
-    if (display === "Error") return;
-
-    if (operator && waitingForSecondValue) {
-      setOperator(nextOperator);
-      return;
-    }
-
-    if (firstValue === null) {
-      setFirstValue(inputValue);
-    } else if (operator) {
-      const result = calculate(firstValue, inputValue, operator);
-
-      if (result === "Error") {
-        setDisplay("Error");
-        setFirstValue(null);
-        setOperator(null);
-        return;
-      }
-
-      setDisplay(String(result));
-      setFirstValue(result);
-    }
-
-    setOperator(nextOperator);
-    setWaitingForSecondValue(true);
-  };
-
-  const handleEquals = () => {
-    if (operator === null || firstValue === null) return;
-
-    const secondValue = parseFloat(display);
-    const result = calculate(firstValue, secondValue, operator);
-
-    setDisplay(String(result));
-    setFirstValue(null);
-    setOperator(null);
-    setWaitingForSecondValue(false);
-  };
+    return () => clearInterval(timer);
+  }, [paused]);
 
   return (
-    <div className="calculator-page">
+    <main className="page">
+      <div
+        className="carousel"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {/* Header */}
+        <header className="carousel-header">
+          <div className="logo">FRAME<span>.</span></div>
 
-      <div className="calculator">
+          <div className="header-text">
+            VISUAL STORIES / 2026
+          </div>
+        </header>
 
-        {/* Display */}
-        <div className="display">
-          {display}
+        {/* Main Content */}
+        <div className="carousel-main">
+
+          {/* Text Section */}
+          <div className="content">
+
+            <div className="category">
+              {slides[current].category}
+            </div>
+
+            <h1 key={current}>
+              {slides[current].title}
+            </h1>
+
+            <p key={`p-${current}`}>
+              {slides[current].description}
+            </p>
+
+            <div className="content-line"></div>
+
+            <div className="slide-counter">
+              <strong>
+                {String(current + 1).padStart(2, "0")}
+              </strong>
+
+              <span>/</span>
+
+              <span>
+                {String(slides.length).padStart(2, "0")}
+              </span>
+            </div>
+          </div>
+
+          {/* Image */}
+          <div className="image-area">
+
+            <div className="image-wrapper">
+              {slides.map((slide, index) => (
+                <img
+                  key={slide.image}
+                  src={slide.image}
+                  alt={slide.title}
+                  className={index === current ? "active" : ""}
+                />
+              ))}
+            </div>
+
+            {/* Navigation */}
+            <div className="navigation">
+              <button
+                onClick={previousSlide}
+                aria-label="Previous slide"
+              >
+                ←
+              </button>
+
+              <button
+                onClick={nextSlide}
+                aria-label="Next slide"
+              >
+                →
+              </button>
+            </div>
+
+          </div>
         </div>
 
-        {/* Buttons */}
-        <div className="buttons">
+        {/* Thumbnail Navigation */}
+        <div className="thumbnail-container">
+          {slides.map((slide, index) => (
+            <button
+              key={index}
+              className={`thumbnail ${
+                index === current ? "selected" : ""
+              }`}
+              onClick={() => setCurrent(index)}
+            >
+              <img src={slide.image} alt={slide.title} />
+              <span>0{index + 1}</span>
+            </button>
+          ))}
+        </div>
 
-          <button
-            className="function"
-            onClick={clearCalculator}
-          >
-            AC
-          </button>
-
-          <button
-            className="function"
-            onClick={toggleSign}
-          >
-            +/−
-          </button>
-
-          <button
-            className="function"
-            onClick={percentage}
-          >
-            %
-          </button>
-
-          <button
-            className="operator"
-            onClick={() => chooseOperator("/")}
-          >
-            ÷
-          </button>
-
-
-          <button onClick={() => inputNumber("7")}>7</button>
-          <button onClick={() => inputNumber("8")}>8</button>
-          <button onClick={() => inputNumber("9")}>9</button>
-
-          <button
-            className="operator"
-            onClick={() => chooseOperator("*")}
-          >
-            ×
-          </button>
-
-
-          <button onClick={() => inputNumber("4")}>4</button>
-          <button onClick={() => inputNumber("5")}>5</button>
-          <button onClick={() => inputNumber("6")}>6</button>
-
-          <button
-            className="operator"
-            onClick={() => chooseOperator("-")}
-          >
-            −
-          </button>
-
-
-          <button onClick={() => inputNumber("1")}>1</button>
-          <button onClick={() => inputNumber("2")}>2</button>
-          <button onClick={() => inputNumber("3")}>3</button>
-
-          <button
-            className="operator"
-            onClick={() => chooseOperator("+")}
-          >
-            +
-          </button>
-
-
-          <button
-            className="zero"
-            onClick={() => inputNumber("0")}
-          >
-            0
-          </button>
-
-          <button onClick={inputDecimal}>
-            .
-          </button>
-
-          <button
-            className="operator"
-            onClick={handleEquals}
-          >
-            =
-          </button>
-
+        {/* Progress */}
+        <div className="progress">
+          <div
+            className="progress-fill"
+            style={{
+              width: `${((current + 1) / slides.length) * 100}%`
+            }}
+          ></div>
         </div>
       </div>
-
-    </div>
+    </main>
   );
 }
 
-export default Calculator;
+export default ImageCarousel;
